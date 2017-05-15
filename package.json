@@ -9,6 +9,13 @@
   "bin": {
     "heroku-dotenv": "./bin.js"
   },
+  "keywords": [
+	  "heroku",
+	  "dotenv",
+	  "env",
+	  "environment",
+	  "cli"
+  ],
   "dependencies": {
     "dotenv": "^4.0.0",
     "meow": "^3.7.0"
