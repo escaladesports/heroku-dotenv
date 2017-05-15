@@ -1,0 +1,16 @@
+{
+  "name": "heroku-dotenv",
+  "version": "0.0.0",
+  "description": "Copies environment variables in a .env file to and from Heroku",
+  "main": "index.js",
+  "repository": "https://github.com/escaladesports/heroku-dotenv.git",
+  "author": "Kennedy Rose <krose@escaladesports.com> (https://escaladesports.com)",
+  "license": "MIT",
+  "bin": {
+	  "heroku-dotenv": "./bin.js"
+	},
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "meow": "^3.7.0"
+  }
+}
