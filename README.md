@@ -5,7 +5,7 @@ A CLI & Node.js application that copies environment variables in a .env file to 
 ## Installation
 
 ```
-$ npm install --save heroku-dotenv
+$ npm install --global heroku-dotenv
 ```
 
 ## Usage
