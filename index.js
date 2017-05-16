@@ -1,21 +1,22 @@
 'use strict'
+// TODO option to not overwrite existing vars
 const fs = require('fs')
 const exec = require('child_process').exec
 const dotenv = require('dotenv')
-module.exports = fn => {
+module.exports = (fn, options = {}) => {
 	if(fn === 'pull'){
-		readHerokuEnv()
+		readHerokuEnv(options)
 			.then(saveDotEnv)
 			.catch(console.error)
 	}
 	else if(fn === 'push'){
-		readDotEnv()
+		readDotEnv(options)
 			.then(saveHerokuEnv)
 			.catch(console.error)
 	}
 }
 
-function readDotEnv(){
+function readDotEnv(options){
 	return new Promise((resolve, reject) => {
 		fs.readFile('.env', 'utf8', (err, data) => {
 			if(err){
@@ -23,14 +24,14 @@ function readDotEnv(){
 			}
 			else{
 				const env = dotenv.parse(data)
-				resolve(env)
+				resolve(env, options)
 			}
 		})
 	})
 }
-function readHerokuEnv(){
+function readHerokuEnv(options){
 	return new Promise((resolve, reject) => {
-		exec('heroku config', (err, stdout, stderr) => {
+		exec('heroku config' + (options.app ? ` -a ${options.app}`), (err, stdout, stderr) => {
 			if(err) reject(err)
 			else if(stderr) reject(stderr)
 			else{
@@ -43,12 +44,12 @@ function readHerokuEnv(){
 					const val = str.join(':').trim()
 					arr.push(`${key}=${val}`)
 				}
-				resolve(arr)
+				resolve(arr, options)
 			}
 		})
 	})
 }
-function saveDotEnv(env){
+function saveDotEnv(env, options){
 	return new Promise((resolve, reject) => {
 		fs.writeFile('.env', env.join('\n'), err => {
 			if(err) reject(err)
@@ -56,13 +57,13 @@ function saveDotEnv(env){
 		})
 	})
 }
-function saveHerokuEnv(env){
+function saveHerokuEnv(env, options){
 	return new Promise((resolve, reject) => {
 		const arr = []
 		for(let i in env){
 			arr.push(`${i}=${env[i]}`)
 		}
-		exec(`heroku config:set ${arr.join(' ')}`, (err, stdout, stderr) => {
+		exec(`heroku config:set ${arr.join(' ')}` + (options.app ? ` -a ${options.app}`), (err, stdout, stderr) => {
 			if(err) reject(err)
 			else if(stderr) reject(stderr)
 			else{
