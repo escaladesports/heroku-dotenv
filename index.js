@@ -23,8 +23,8 @@ function readDotEnv(options){
 				reject('File not found or unreadable')
 			}
 			else{
-				const env = dotenv.parse(data)
-				resolve(env, options)
+				options.env = dotenv.parse(data)
+				resolve(options)
 			}
 		})
 	})
@@ -44,24 +44,25 @@ function readHerokuEnv(options){
 					const val = str.join(':').trim()
 					arr.push(`${key}=${val}`)
 				}
-				resolve(arr, options)
+				options.env = arr
+				resolve(options)
 			}
 		})
 	})
 }
-function saveDotEnv(env, options){
+function saveDotEnv(options){
 	return new Promise((resolve, reject) => {
-		fs.writeFile('.env', env.join('\n'), err => {
+		fs.writeFile('.env', options.env.join('\n'), err => {
 			if(err) reject(err)
 			else resolve()
 		})
 	})
 }
-function saveHerokuEnv(env, options){
+function saveHerokuEnv(options){
 	return new Promise((resolve, reject) => {
 		const arr = []
-		for(let i in env){
-			arr.push(`${i}=${env[i]}`)
+		for(let i in options.env){
+			arr.push(`${i}=${options.env[i]}`)
 		}
 		exec(`heroku config:set ${arr.join(' ')}` + (options.app ? ` -a ${options.app}` : ''), (err, stdout, stderr) => {
 			if(err) reject(err)
