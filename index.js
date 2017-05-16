@@ -31,7 +31,7 @@ function readDotEnv(options){
 }
 function readHerokuEnv(options){
 	return new Promise((resolve, reject) => {
-		exec('heroku config' + (options.app ? ` -a ${options.app}` : ''), (err, stdout, stderr) => {
+		exec('heroku config' + (options.app ? ` --app ${options.app}` : ''), (err, stdout, stderr) => {
 			if(err) reject(err)
 			else if(stderr) reject(stderr)
 			else{
@@ -64,7 +64,7 @@ function saveHerokuEnv(options){
 		for(let i in options.env){
 			arr.push(`${i}=${options.env[i]}`)
 		}
-		exec(`heroku config:set ${arr.join(' ')}` + (options.app ? ` -a ${options.app}` : ''), (err, stdout, stderr) => {
+		exec(`heroku config:set ${arr.join(' ')}` + (options.app ? ` --app ${options.app}` : ''), (err, stdout, stderr) => {
 			if(err) reject(err)
 			else if(stderr) reject(stderr)
 			else{
