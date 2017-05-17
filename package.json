@@ -1,6 +1,6 @@
 {
   "name": "heroku-dotenv",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Copies environment variables in a .env file to and from Heroku",
   "main": "index.js",
   "repository": "https://github.com/escaladesports/heroku-dotenv.git",
