@@ -1,7 +1,5 @@
 'use strict'
 // TODO option to not overwrite existing vars
-// TODO change NODE_ENV to production option
-// TODO readme options
 const fs = require('fs')
 const exec = require('child_process').exec
 const dotenv = require('dotenv')
@@ -63,6 +61,9 @@ function saveDotEnv(options){
 function saveHerokuEnv(options){
 	return new Promise((resolve, reject) => {
 		const arr = []
+		if(options.production){
+			options.env.NODE_ENV = 'production'
+		}
 		for(let i in options.env){
 			arr.push(`${i}=${options.env[i]}`)
 		}
@@ -75,4 +76,12 @@ function saveHerokuEnv(options){
 			}
 		})
 	})
+}
+
+
+function setOptions(str, opt){
+	if(opt.app){
+		str = `${str} --app ${opt.app}`
+	}
+	return str
 }
