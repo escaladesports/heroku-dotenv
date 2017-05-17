@@ -1,5 +1,7 @@
 'use strict'
 // TODO option to not overwrite existing vars
+// TODO change NODE_ENV to production option
+// TODO readme options
 const fs = require('fs')
 const exec = require('child_process').exec
 const dotenv = require('dotenv')
