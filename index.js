@@ -67,7 +67,23 @@ function saveHerokuEnv(options){
 		for(let i in options.env){
 			arr.push(`${i}=${options.env[i]}`)
 		}
-		exec(`heroku config:set ${arr.join(' ')}` + (options.app ? ` --app ${options.app}` : ''), (err, stdout, stderr) => {
+		if(!options.app) options.app = ''
+		options.app = options.app.split(' ')
+
+		const promises = []
+		for(let i = options.app.length; i--;){
+			promises.push(execSave(options.app[i], arr))
+		}
+		Promise.all(promises)
+			.then(resolve)
+			.catch(reject)
+
+	})
+}
+function execSave(app, arr){
+	app = app.trim()
+	return new Promise((resolve, reject) => {
+		exec(`heroku config:set ${arr.join(' ')}` + (app ? ` --app ${app}` : ''), (err, stdout, stderr) => {
 			if(err) reject(err)
 			else if(stderr) reject(stderr)
 			else{
