@@ -42,7 +42,7 @@ function readHerokuEnv(options){
 					let str = stdout[i].split(':')
 					const key = str.shift()
 					const val = str.join(':').trim()
-					arr.push(`${key}=${val}`)
+					arr.push(`${key}="${val}"`)
 				}
 				options.env = arr
 				resolve(options)
@@ -58,6 +58,7 @@ function saveDotEnv(options){
 		})
 	})
 }
+const regQuotes = /"/g
 function saveHerokuEnv(options){
 	return new Promise((resolve, reject) => {
 		const arr = []
@@ -65,7 +66,7 @@ function saveHerokuEnv(options){
 			options.env.NODE_ENV = 'production'
 		}
 		for(let i in options.env){
-			arr.push(`${i}=${options.env[i]}`)
+			arr.push(`${i}="${options.env[i].replace(regQuotes, '\\"')}"`)
 		}
 		if(!options.app) options.app = ''
 		options.app = options.app.split(' ')
