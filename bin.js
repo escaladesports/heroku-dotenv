@@ -10,10 +10,12 @@ const cli = meow(`
 	Options
 	  -a, --app          Specify the Heroku app to push to or pull from
 	  -p, --production   Turns on the Node.js production environment variable
+		-f, --file         Specify the relative path to the .env file. E.g. ./heroku/.env-produtcion
 `, {
 	alias: {
 		a: 'app',
-		p: 'production'
+		p: 'production',
+		f: 'file'
 	}
 })
 herokuDotenv(cli.input[0], cli.flags)
