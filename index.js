@@ -18,7 +18,8 @@ module.exports = (fn, options = {}) => {
 
 function readDotEnv(options){
 	return new Promise((resolve, reject) => {
-		fs.readFile('.env', 'utf8', (err, data) => {
+		const filePath = options.file || '.env';
+		fs.readFile(filePath, 'utf8', (err, data) => {
 			if(err){
 				reject('File not found or unreadable')
 			}

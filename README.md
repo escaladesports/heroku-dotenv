@@ -39,3 +39,10 @@ Turns on the Node.js production environment variable.
 ```bash
 $ heroku-dotenv push -p
 ```
+
+#### -f, --file
+Specify the relative path to the .env file.
+
+```bash
+$ heroku-dotenv push -f ./my-environment/my-heroku-env-vars
+```
